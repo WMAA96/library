@@ -5,8 +5,12 @@ const addBtn = document.getElementById("addBtn");
 const addForm = document.getElementById("addForm");
 addForm.style.display="none";
 
+const field = document.getElementsByClassName("field");
+const submit = document.getElementById("submit");
 
-addBtn.addEventListener("click", test);   
+
+addBtn.addEventListener("click", addNewBook);   
+submit.addEventListener("click", addBook);  
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -46,6 +50,25 @@ function display() {
     }
 }
 
-function test() {
+function addNewBook() {
     addForm.style.display="block";
+
+    
+}
+
+function addBook() {
+
+    let book = new Book(
+        title = document.getElementById("title").value,
+        author = document.getElementById("author").value,
+        pages = document.getElementById("pages").value,
+        read = document.getElementById("read").value,
+    )
+
+    addBookToLibrary(book);
+    
+
+    addForm.style.display="none";
+
+    console.log(title, author, pages, read);
 }

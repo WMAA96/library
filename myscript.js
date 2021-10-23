@@ -9,7 +9,11 @@ const field = document.getElementsByClassName("field");
 const submit = document.getElementById("submit");
 
 
-addBtn.addEventListener("click", addNewBook);   
+addBtn.addEventListener("click", () => {
+    addForm.style.display="block";
+})
+
+
 submit.addEventListener("click", addBook);  
 
 function Book(title, author, pages, read) {
@@ -18,17 +22,16 @@ function Book(title, author, pages, read) {
   this.pages = pages;
   this.read = read;
   this.info = function() {
-      return title + " by " + author + " , " + pages + " pages" + " ," +  read;
+      return title + " by " + author + " , " + pages + " pages" + " , " +  read;
   }
 }
 
-let theHobbit = new Book("Hobbit", "me", "5", "no");
+let theHobbit = new Book("The Hobbit", "Tolkien", "521", "Not read");
 addBookToLibrary(theHobbit);
 
 let PJ = new Book ("PJ", "Rick R", "434", "Read");
 addBookToLibrary(PJ);
 
-console.log(theHobbit.info());
 
 display();
 
@@ -41,20 +44,30 @@ myLibrary.push(book);
 
 
 function display() {
-    for (var i = 0; i < myLibrary.length; i++) {
-        console.log(myLibrary[i]);
+
+    // Removes all the current cards -- need to think of more efficient way to do
+    let cards = document.getElementById("cardsContainer").childNodes;
+    for (let i = cards.length - 1; i >= 0; i --) {
+        cards[i].remove();
+    }
+
+    for (let i = 0; i < myLibrary.length; i++) {
+        
         let card = document.createElement("div");
         card.textContent = myLibrary[i].info();
         cardsContainer.appendChild(card).className = "card";
 
+        let deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete" + i;
+        deleteButton.addEventListener("click", removeFromLibrary);
+        card.appendChild(deleteButton).className = i;
+        
+
     }
-}
-
-function addNewBook() {
-    addForm.style.display="block";
-
     
 }
+
+
 
 function addBook() {
 
@@ -66,9 +79,23 @@ function addBook() {
     )
 
     addBookToLibrary(book);
-    
+    display();
 
     addForm.style.display="none";
 
-    console.log(title, author, pages, read);
+    
+}
+
+function removeFromLibrary(e) {
+    console.log(e.target.className);
+
+    for(let i = myLibrary.length -1; i>= 0; i--) {
+        if(e.target.className == i) {
+            myLibrary.splice(i, 1);
+            display();
+        }
+        
+    }
+
+    
 }

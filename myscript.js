@@ -24,6 +24,18 @@ function Book(title, author, pages, read) {
   this.info = function() {
       return title + " by " + author + " , " + pages + " pages" + " , " +  read;
   }
+
+  this.readStatus = function () {
+    objIndex = myLibrary.findIndex((obj => obj.title == title));
+
+      if(read === "Not read") {
+          read = "Read";
+          myLibrary[objIndex].read = "Read"
+      }
+      else
+      read = "Not read";
+      myLibrary[objIndex].read = "Not read"
+  }
 }
 
 let theHobbit = new Book("The Hobbit", "Tolkien", "521", "Not read");
@@ -31,7 +43,6 @@ addBookToLibrary(theHobbit);
 
 let PJ = new Book ("PJ", "Rick R", "434", "Read");
 addBookToLibrary(PJ);
-
 
 display();
 
@@ -45,7 +56,7 @@ myLibrary.push(book);
 
 function display() {
 
-    // Removes all the current cards -- need to think of more efficient way to do
+    // Removes all the current cards, then adds  any new ones with updated buttons etc
     let cards = document.getElementById("cardsContainer").childNodes;
     for (let i = cards.length - 1; i >= 0; i --) {
         cards[i].remove();
@@ -62,6 +73,10 @@ function display() {
         deleteButton.addEventListener("click", removeFromLibrary);
         card.appendChild(deleteButton).className = i;
         
+        let read = document.createElement("button");
+        read.textContent = "Read";
+        read.addEventListener("click", changeRead);
+        card.appendChild(read).className = i;
 
     }
     
@@ -98,4 +113,15 @@ function removeFromLibrary(e) {
     }
 
     
+}
+
+function changeRead(e) {
+    for(let i = myLibrary.length -1; i>= 0; i--) {
+        if(e.target.className == i) {
+            myLibrary[i].readStatus();
+            display();
+        }
+        
+    }
+
 }
